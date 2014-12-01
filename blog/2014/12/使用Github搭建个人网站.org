@@ -1,0 +1,46 @@
+-----
+昨天经过一天的尝试，终于找到了一种适合自己的，使用Github和Org-mode来做网站的方法，这里简单总结一下。
+
+*我的需求*
+1. 简单，容易操作。本人不追求华丽的视觉效果，加上前端技术太差，所以简单的静态Html页面就很好；
+2. 访问快速。
+
+*操作步骤*
+
+* 创建工程
+
+首先在Github上创建一个工程，名字为your_name.github.io，比如我的为madahah.github.io，工程选项可以默认。
+
+#+BEGIN_SRC 
+ $ git clone you_user_name.github.io
+#+END_SRC
+
+* 编写首页 
+
+首先在本地创建一个空目录，使用Emacs和Org-mode创建首页，并使用C-c C-e hh导出Html，
+
+* 提交
+
+#+BEGIN_SRC 
+$ git init
+
+$ git add *
+
+$ git commit -m "add my first page"
+
+$ git remote add origin https://github.com/you_name/your_name.github.io.git
+
+$ git push -u origin master
+
+#+END_SRC
+
+* 添加新文章
+
+后面需要添加文章时只要增加一个org文件并输出Html，在首页上加入对新文章的链接，最后再输出首页的Html。
+
+*总结*
+
+总体来说，Github和Org-mode基本满足了我的需求，后期可能需要自己写个脚本来时这个过程更简单。
+
+[[file:/work/myweb/LESS%20IS%20MORE.html][返回首页]] [[file:/work/myweb/blog/%E5%85%B6%E5%AE%83.html][主目录]]
+-----
