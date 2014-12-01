@@ -1,3 +1,5 @@
 -----
 暂无文章
+
+[[file:/work/myweb/index.html][首页]]
 -----
