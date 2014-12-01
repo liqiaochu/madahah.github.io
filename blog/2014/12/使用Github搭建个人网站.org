@@ -17,12 +17,11 @@
 
 * 编写首页 
 
-首先在本地创建一个空目录，使用Emacs和Org-mode创建首页，并使用C-c C-e hh导出Html，
+使用Emacs和Org-mode创建首页，并使用C-c C-e hh导出Html，放在clone出的本地目录下。
 
 * 提交
 
 #+BEGIN_SRC 
-$ git init
 
 $ git add *
 
