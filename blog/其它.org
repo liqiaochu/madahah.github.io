@@ -3,5 +3,5 @@
 
 [[file:2014/12/%E4%BD%BF%E7%94%A8Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99.html][使用Github搭建个人网站]]
 
-[[file:/work/myweb/index.html][返回首页]]
+[[file:/work/myweb/index.html][首页]]
 -----
