@@ -41,5 +41,5 @@ $ git push -u origin master
 
 总体来说，Github和Org-mode基本满足了我的需求，后期可能需要自己写个脚本来时这个过程更简单。
 
-[[file:/work/myweb/index.html][首页]]
+[[file:../../../index.html][首页]]
 -----
