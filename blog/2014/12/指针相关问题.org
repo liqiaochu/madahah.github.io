@@ -1,0 +1,86 @@
+-----
+最近在review一个同事写的代码，实在看不下去了自己重写了大部分，在重写的过程中，有些用指针的地方也没有一次就写好，还是靠编译器来找出的错误，这里简单总结一下。
+
+* 结构体与指针
+
+大型程序中结构体包含结构体的情况很常见，而且有时包含好多层，有的定义的是变量，有的定义的是指针，在引用时，很容易用错“.”和“->”。其实只要牢记一点，不要看你引用的成员是否是指针，而是看上一层定义是否是是指针，说起来有些拗口，请看下面例子：
+
+#+BEGIN_SRC C
+
+#include <stdlib.h>
+
+struct _st1 {
+   int  a;
+   int *p;
+};
+
+struct _st2 {
+   struct _st1 s1;
+   struct _st1 *s2;
+};
+
+int main()
+{
+   struct _st2  s;
+   struct _st2 *ps;
+
+   s.s1.a = 1;
+   s.s1.p = NULL;
+   s.s2 = (struct _st1*)malloc(sizeof(struct _st1));
+   s.s2->a = 1;
+   s.s2->p = NULL;
+
+   ps = (struct _st2*)malloc(sizeof(struct _st2));
+   ps->s1.a = 0;
+   ps->s1.p = NULL; /* 因为struct _st1中p是指针，所以容易写成 ps->s1->p，但实际上是看s1是否是指针，这里是s1不是指针，所以用"." */
+   ps->s2 = (struct _st1*)malloc(sizeof(struct _st1));
+   ps->s2->a = 0;
+   ps->s2->p = NULL;
+
+   return 0;
+}
+
+#+END_SRC
+
+* 参数与指针
+
+在使用指针传参数时，输出参数使用高一级的指针，也就是说在函数中分配内存要用二级指针，要想分配内存多个存放指针，那你就需要三级指针。
+
+#+BEGIN_SRC C
+
+#include <stdlib.h>
+
+void func(char **p)
+{
+   *p = malloc(10);
+}
+
+void func2(char ***p)
+{
+   *p = malloc(sizeof(void *)*2);
+}
+
+int main()
+{
+   char *p1  = NULL;
+   char *p2  = NULL;
+   char **pp = NULL;
+
+   func(&p1);
+   func(&p2);
+   func2(&pp);
+   pp[0] = p1;
+   pp[1] = p2;
+
+   free(p1);
+   free(p2);
+   free(pp);
+
+   return 0;
+}
+
+#+END_SRC
+
+暂时先说这两个问题，后面有时间在补充。
+[[http://madahah.github.io/index.html][首页]]  [[http://madahah.github.io/blog/%E7%BC%96%E7%A8%8B.html][编程]]
+-----
