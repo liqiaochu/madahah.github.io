@@ -1,0 +1,138 @@
+CentOS 7发布有一段时间了，以前一直使用6,只是在7中使用awesome不太容易，就一直没有升级，今天突然想到应该可以使用fedora的源来安装某些fedora软件，正好闲来无事，于是尝试了下，竟然成功了，这里简单介绍最小安装CentOS 7以及后续相关配置。
+
+* 最小系统安装
+
+为什么要最小安装？
+
+我喜欢自己定制系统，因为默认有太多东西我不需要，所以我一般选择都是选择最小安装，然后根据自己需要，安装相关软件。
+
+首先将iso文件放在一个分区的根目录下，把它mount到某个目录下，复制isolinux到iso相同目录下，然后重启。
+
+进入grub时按c进入命令模式，并输入下面命令：
+#+BEGIN_SRC sh
+linux (hd0,msdos5)/isolinux/vmlinux repo=hd:/dev/sdb5:/
+initrd (hd0,msdos5)/isolinux/initrd.img
+#+END_SRC
+进入安装界面后，进行相关配置，这里略过，直到安装结束，重启机器进入新系统，接下来先更新系统：
+
+#+BEGIN_SRC sh
+# yum update -y
+# reboot
+#+END_SRC
+
+* 额外仓库
+
+CentOS一般做为服务器，所以常用桌面软件不是很多，但是Fedora和epel可以作为它的仓库。
+
+*epel*
+
+下载epel-release-7-2.noarch.rpm并安装：
+#+BEGIN_SRC sh
+# rpm -i epel-release-7-2.noarch.rpm
+#+END_SRC
+
+*fedora*
+
+我直接使用163的源，创建一个fedora.repo的文件，内容为：
+#+BEGIN_SRC 
+[fedora]
+name=Fedora
+failovermethod=priority
+baseurl=http://mirrors.163.com/fedora/releases/19/Everything/x86_64/os
+enabled=0
+metadata_expire=7d
+gpgcheck=0
+#+END_SRC
+这里我把gpgcheck设成0，因为我没有去找相关gpg key。
+
+* 桌面环境
+*Xorg*
+
+首先安装Xorg，这里只要装xrog-x11-xinit，xorg-x11-drv-evdev，xorg-x11-drv-intel等几个包就够了，你也可以根据自己的需要安装。
+
+#+BEGIN_SRC sh
+# yum install xorg-x11-xinit xorg-x11-drv-intel xorg-x11-drv-evdev dbus-x11
+#+END_SRC
+
+*WM*
+
+关于ＷＭ，我一直都在使用openbox，awesome之类的WM，目前用的最多的就是awesome，可是CentOS的仓库里没有，于是使用Fedora仓库中的awesome。
+
+#+BEGIN_SRC sh
+# yum install awesome xdg-utils
+#+END_SRC
+
+*终端*
+
+我喜欢urxvt，它属于epel仓库：
+
+#+BEGIN_SRC sh
+# yum install rxvt-unicode
+#+END_SRC
+
+安装后，它默认字体很小，需要重新设置，创建~/.Xdefault：
+#+BEGIN_SRC sh
+URxvt.inputMethod:fcitx
+!!颜色设置
+URxvt.depth:32
+URxvt.background:[90]#000000
+URxvt.foreground:#ffffff
+!!我不需要滚动条
+URxvt.scrollBar:False
+URxvt.borderLess:False
+!!字体
+Xft.dpi:96
+URxvt.font:xft:文泉驿等宽正黑:size=12:style=Regular:antialias=true,xft:文泉驿等宽正黑:size=12:style=Regular:antialias=true
+URxvt.boldfont:xft:文泉驿等宽正黑:size=12:style=BOld:antialias=true,xft:文泉驿等宽正黑:size=12:style=Bold:antialias=true
+#+END_SRC
+
+执行下面命令加载配置，也可以在启动WM时执行：
+#+BEGIN_SRC sh
+# xrdb -load  ~/.Xdefault
+#+END_SRC
+
+*声音支持*
+
+安装alsa-utils：
+#+BEGIN_SRC sh
+# yum install alsa-utils
+# alsactl init
+#+END_SRC
+
+*中文支持*
+
+中文字体，我一般使用wqy字体，而中文输入法，我使用fcitx，它在Fedora的仓库里：
+#+BEGIN_SRC sh
+# yum install wqy-* fcitx-libpinyin fcitx-configtool
+#+END_SRC
+然后执行fcitx-configtool，加入相应中文输入法。
+
+设置相关环境变量，编辑.bashrc，加入下面代码：
+#+BEGIN_SRC sh
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+export LC_CTYPE=zh_CN.utf-8
+#+END_SRC
+
+在设置完成后，发现在firefox下无法输入中文，搜索得知需要更新gtk相关文件：
+#+BEGIN_SRC sh
+# gtk-query-immodules-3.0 --update-cache
+# gtk-query-immodules-2.0 --update-cache
+#+END_SRC
+
+*开机启动*
+
+awesome使用lua脚本作为配置文件，默认为/etc/xdg/awesome/rc.lua，我们可以编辑它加入相关代码，完成我们想要的功能，比如我想开机启动fcitx，你也可以把fcitx换成你想启动的程序：
+#+BEGIN_SRC 
+awful.util.spawn_with_shell("fcitx")
+#+END_SRC
+
+其他程序都可以用yum来安装，这里就不多说了。
+* 开发环境
+我平时主要做C开发，一并安装常用开发工具和库：
+#+BEGIN_SRC sh
+# yum install emacs gcc gcc-c++ make flex bison gdb git subversion gtk2-devel readline-devel
+#+END_SRC
+
+[[file:/work/myweb/index.html][首页]]

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>CentOS 7基本配置</title>
+<!-- 2014-12-23 Tue 20:08 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="jim" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">CentOS 7基本配置</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 最小系统安装</a></li>
+<li><a href="#sec-2">2. 额外仓库</a></li>
+<li><a href="#sec-3">3. 桌面环境</a></li>
+<li><a href="#sec-4">4. 开发环境</a></li>
+</ul>
+</div>
+</div>
+<p>
+CentOS 7发布有一段时间了，以前一直使用6,只是在7中使用awesome不太容易，就一直没有升级，今天突然想到应该可以使用fedora的源来安装某些fedora软件，正好闲来无事，于是尝试了下，竟然成功了，这里简单介绍最小安装CentOS 7以及后续相关配置。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 最小系统安装</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+为什么要最小安装？
+</p>
+
+<p>
+我喜欢自己定制系统，因为默认有太多东西我不需要，所以我一般选择都是选择最小安装，然后根据自己需要，安装相关软件。
+</p>
+
+<p>
+首先将iso文件放在一个分区的根目录下，把它mount到某个目录下，复制isolinux到iso相同目录下，然后重启。
+</p>
+
+<p>
+进入grub时按c进入命令模式，并输入下面命令：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #87cefa;">linux</span> (hd0,msdos5)/isolinux/vmlinux <span style="color: #eedd82;">repo</span>=hd:/dev/sdb5:/
+<span style="color: #87cefa;">initrd</span> (hd0,msdos5)/isolinux/initrd.img
+</pre>
+</div>
+<p>
+进入安装界面后，进行相关配置，这里略过，直到安装结束，重启机器进入新系统，接下来先更新系统：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">yum update -y</span>
+<span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">reboot</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 额外仓库</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+CentOS一般做为服务器，所以常用桌面软件不是很多，但是Fedora和epel可以作为它的仓库。
+</p>
+
+<p>
+<b>epel</b>
+</p>
+
+<p>
+下载epel-release-7-2.noarch.rpm并安装：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">rpm -i epel-release-7-2.noarch.rpm</span>
+</pre>
+</div>
+
+<p>
+<b>fedora</b>
+</p>
+
+<p>
+我直接使用163的源，创建一个fedora.repo的文件，内容为：
+</p>
+<pre class="example">
+[fedora]
+name=Fedora
+failovermethod=priority
+baseurl=http://mirrors.163.com/fedora/releases/19/Everything/x86_64/os
+enabled=0
+metadata_expire=7d
+gpgcheck=0
+</pre>
+<p>
+这里我把gpgcheck设成0，因为我没有去找相关gpg key。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 桌面环境</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<b>Xorg</b>
+</p>
+
+<p>
+首先安装Xorg，这里只要装xrog-x11-xinit，xorg-x11-drv-evdev，xorg-x11-drv-intel等几个包就够了，你也可以根据自己的需要安装。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">yum install xorg-x11-xinit xorg-x11-drv-intel xorg-x11-drv-evdev dbus-x11</span>
+</pre>
+</div>
+
+<p>
+<b>WM</b>
+</p>
+
+<p>
+关于ＷＭ，我一直都在使用openbox，awesome之类的WM，目前用的最多的就是awesome，可是CentOS的仓库里没有，于是使用Fedora仓库中的awesome。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">yum install awesome xdg-utils</span>
+</pre>
+</div>
+
+<p>
+<b>终端</b>
+</p>
+
+<p>
+我喜欢urxvt，它属于epel仓库：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">yum install rxvt-unicode</span>
+</pre>
+</div>
+
+<p>
+安装后，它默认字体很小，需要重新设置，创建~/.Xdefault：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">URxvt.inputMethod:fcitx
+!!&#39068;&#33394;&#35774;&#32622;
+URxvt.depth:32
+URxvt.background:[90]#000000
+URxvt.foreground:#ffffff
+!!&#25105;&#19981;&#38656;&#35201;&#28378;&#21160;&#26465;
+URxvt.scrollBar:False
+URxvt.borderLess:False
+!!&#23383;&#20307;
+Xft.dpi:96
+URxvt.font:xft:&#25991;&#27849;&#39551;&#31561;&#23485;&#27491;&#40657;:<span style="color: #eedd82;">size</span>=12:<span style="color: #eedd82;">style</span>=Regular:<span style="color: #eedd82;">antialias</span>=true,xft:&#25991;&#27849;&#39551;&#31561;&#23485;&#27491;&#40657;:<span style="color: #eedd82;">size</span>=12:<span style="color: #eedd82;">style</span>=Regular:<span style="color: #eedd82;">antialias</span>=true
+URxvt.boldfont:xft:&#25991;&#27849;&#39551;&#31561;&#23485;&#27491;&#40657;:<span style="color: #eedd82;">size</span>=12:<span style="color: #eedd82;">style</span>=BOld:<span style="color: #eedd82;">antialias</span>=true,xft:&#25991;&#27849;&#39551;&#31561;&#23485;&#27491;&#40657;:<span style="color: #eedd82;">size</span>=12:<span style="color: #eedd82;">style</span>=Bold:<span style="color: #eedd82;">antialias</span>=true
+</pre>
+</div>
+
+<p>
+执行下面命令加载配置，也可以在启动WM时执行：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">xrdb -load  ~/.Xdefault</span>
+</pre>
+</div>
+
+<p>
+<b>声音支持</b>
+</p>
+
+<p>
+安装alsa-utils：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">yum install alsa-utils</span>
+<span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">alsactl init</span>
+</pre>
+</div>
+
+<p>
+<b>中文支持</b>
+</p>
+
+<p>
+中文字体，我一般使用wqy字体，而中文输入法，我使用fcitx，它在Fedora的仓库里：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">yum install wqy-* fcitx-libpinyin fcitx-configtool</span>
+</pre>
+</div>
+<p>
+然后执行fcitx-configtool，加入相应中文输入法。
+</p>
+
+<p>
+设置相关环境变量，编辑.bashrc，加入下面代码：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #b0c4de;">export</span> <span style="color: #eedd82;">GTK_IM_MODULE</span>=fcitx
+<span style="color: #b0c4de;">export</span> <span style="color: #eedd82;">QT_IM_MODULE</span>=fcitx
+<span style="color: #b0c4de;">export</span> <span style="color: #eedd82;">XMODIFIERS</span>=<span style="color: #ffa07a;">"@im=fcitx"</span>
+<span style="color: #b0c4de;">export</span> <span style="color: #eedd82;">LC_CTYPE</span>=zh_CN.utf-8
+</pre>
+</div>
+
+<p>
+在设置完成后，发现在firefox下无法输入中文，搜索得知需要更新gtk相关文件：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">gtk-query-immodules-3.0 --update-cache</span>
+<span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">gtk-query-immodules-2.0 --update-cache</span>
+</pre>
+</div>
+
+<p>
+<b>开机启动</b>
+</p>
+
+<p>
+awesome使用lua脚本作为配置文件，默认为/etc/xdg/awesome/rc.lua，我们可以编辑它加入相关代码，完成我们想要的功能，比如我想开机启动fcitx，你也可以把fcitx换成你想启动的程序：
+</p>
+<pre class="example">
+awful.util.spawn_with_shell("fcitx")
+</pre>
+
+<p>
+其他程序都可以用yum来安装，这里就不多说了。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 开发环境</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+我平时主要做C开发，一并安装常用开发工具和库：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">yum install emacs gcc gcc-c++ make flex bison gdb git subversion gtk2-devel readline-devel</span>
+</pre>
+</div>
+
+<p>
+<a href="file:///work/myweb/index.html">首页</a>
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: jim</p>
+<p class="date">Created: 2014-12-23 Tue 20:08</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
