@@ -12,6 +12,8 @@ madahah，80后程序员，暂居西安，从事关系数据库内核开发相�
 本站采用Org mode生成，全部为静态网页，不支持评论，给您带来不便很抱歉。
 
 -------
+[[file:blog/2015/9/ECB%E9%85%8D%E7%BD%AE.html][ECB配置]]
+
 [[file:blog/2014/12/%E4%BD%BF%E7%94%A8Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99.html][使用Github搭建个人网站]]
 
 [[file:blog/2014/12/%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98.html][指针相关问题]]
